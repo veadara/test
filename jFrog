@@ -1,0 +1,20 @@
+response=$(curl -s http://example.com/ -o /dev/null -I -w "%{http_code}")
+echo $response
+case "$response" in
+        200)
+                echo "user already there $1"
+                verifyGroup $2
+
+                addUserToGroup $1 $2 $3
+        ;;
+        404)
+                echo "user not found: $1\n"
+                verifyGroup $2
+
+                addGroup
+                addUserToGroup
+        ;;
+        *)
+                echo "Error from jFrog: $response\n"
+        ;;
+esac
